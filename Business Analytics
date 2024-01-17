@@ -1,0 +1,81 @@
+# This Python 3 environment comes with many helpful analytics libraries installed
+# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
+# For example, here's several helpful packages to load
+
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+
+# Input data files are available in the read-only "../input/" directory
+# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
+
+import os
+for dirname, _, filenames in os.walk(r"C:\Users\S. BHUVANI\Downloads\E-commerce Customer Behavior - Sheet1 (1).csv"):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+        # You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
+# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+df=pd.read_csv(r"C:\Users\S. BHUVANI\Downloads\E-commerce Customer Behavior - Sheet1 (1).csv")
+
+
+df.head()
+
+df.tail()
+
+df.describe()
+
+df.info()
+
+df.isnull().sum()
+
+df['Satisfaction Level'].fillna(2, inplace=True)
+df.drop_duplicates(inplace=True)
+df['Gender'].value_counts()
+
+plt.figure(figsize=(8, 6))
+df['Gender'].value_counts().plot(kind='pie', autopct='%1.2f%%')
+plt.show()
+
+gender_spend = df.groupby('Gender')['Total Spend'].mean()
+gender_spend.plot.bar()
+plt.title("Average Spending for each Gender")
+plt.show()
+
+# Assuming df is your DataFrame
+gender_membership = df[['Gender', 'Membership Type']].value_counts().reset_index(name='count')
+# Use 'count' as the y-axis
+sns.barplot(data=gender_membership, x='Gender', y='count', hue='Membership Type')
+plt.show()
+
+# Assuming df is your DataFrame
+age_data = df['Age'].value_counts().reset_index(name='count')
+plt.figure(figsize=(10, 6))
+sns.barplot(data=age_data, x='index', y='count')  # 'index' corresponds to the 'Age' column
+plt.title("Age Distribution")
+plt.xlabel("Age")
+plt.ylabel("Count")
+plt.show()
+
+# Assuming df is your DataFrame
+gender_age_data = df[['Gender', 'Age']].value_counts().reset_index(name='count').sort_values(by='count', ascending=False)
+# Visualize age and gender
+plt.figure(figsize=(16, 6))
+sns.barplot(data=gender_age_data, x='Age', y='count', hue='Gender')
+plt.title("Age Distribution by Gender")
+plt.xlabel("Age")
+plt.ylabel("Count")
+plt.show()
+
+plt.figure(figsize=(10, 6))
+df['City'].value_counts().plot(kind='pie', autopct='%.2f%%')
+plt.show()
+
+plt.figure(figsize=(8, 6))
+sns.barplot(data=df, x='City', y='Total Spend')
+plt.title("Average Spending by City")
+plt.show()
+
+
